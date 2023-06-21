@@ -53,6 +53,20 @@ export default [
     component: './TableList',
   },
   {
+    name: 'list.test',
+    icon: 'Apple',
+    access: 'canAdmin',
+    path: '/test',
+    component: './List/Test'
+  },
+  {
+    name: 'roles',
+    icon: 'table',
+    access: 'canAdmin',
+    path: '/roles',
+    component: './Roles'
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

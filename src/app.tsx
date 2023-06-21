@@ -133,4 +133,14 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
  */
 export const request = {
   ...errorConfig,
+  /*
+  requestInterceptors: [
+    // 直接写一个 function，作为拦截器
+    (url, options) => {
+        return { 
+          url: `http://localhost:10086${url}`, options 
+        }
+      }
+    ]
+    */
 };
