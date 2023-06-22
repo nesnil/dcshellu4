@@ -98,4 +98,13 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
+
+  type Role = {
+    id: string,
+    name: string,
+    identifier: string,
+    order: number,
+    enabled: boolean,
+    expireTime?: number
+  };
 }
