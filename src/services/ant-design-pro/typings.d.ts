@@ -107,4 +107,17 @@ declare namespace API {
     enabled: boolean,
     expireTime?: number
   };
+
+  type Menu = {
+    id: string,
+    pid?: string,
+    name: string,
+    order: number,
+    path: string,
+    icon: string,
+    children: Menu[],
+    hide: boolean,
+    type?: "inner"|"outer"|undefined,
+  }
+
 }

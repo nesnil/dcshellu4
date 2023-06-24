@@ -34,7 +34,7 @@ const RoleList: React.FC = () =>{
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [addRoleForm] = Form.useForm();
-    const tableRef = useRef();
+    const tableRef = useRef<ProTable>(null);
     const cols : ProColumns<API.Role>[] = [
       {
         title: "ID",
@@ -77,7 +77,7 @@ const RoleList: React.FC = () =>{
               <Button icon={<DeleteOutlined/>} onClick={ async ()=>{
                 const res = await handleDeleteRole(entity.id);
                 if(res){
-                  tableRef.current!.reload();
+                  tableRef.current.reload();
                 }
               }}></Button>
               </Space>
@@ -119,7 +119,7 @@ const RoleList: React.FC = () =>{
               const res:boolean = await handleSaveRole(role);
               if(res){
                 setIsModalOpen(false);
-                tableRef.current!.reload();
+                tableRef.current.reload();
               }
             })
         }}

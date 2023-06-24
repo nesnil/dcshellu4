@@ -10,6 +10,8 @@ import { errorConfig } from './requestErrorConfig';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
+import {MenuDataItem} from "@umijs/route-utils";
+import {getMenus} from "@/services/ant-design-pro/menus";
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
@@ -19,8 +21,10 @@ const loginPath = '/user/login';
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
+  currentMenu?: MenuDataItem[];
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchMenus?: () => Promise< MenuDataItem[] >;
 }> {
   const fetchUserInfo = async () => {
     try {
@@ -33,18 +37,38 @@ export async function getInitialState(): Promise<{
     }
     return undefined;
   };
+  const  fetchMenus = async()=>{
+    const resp = await getMenus();
+    const menu2MenuDataItem:(m:API.Menu) => MenuDataItem = (m:API.Menu) =>{
+      const item:MenuDataItem = {
+        name: m.name,
+        path: m.path,
+        hideInMenu: m.hide,
+        icon: m.icon,
+        children: m.children?.map( menu2MenuDataItem )
+      }
+      return item;
+    }
+    if(resp?.success)
+      return resp.data.map( menu2MenuDataItem );
+    return []
+  }
   // 如果不是登录页面，执行
   const { location } = history;
   if (location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
+    const currentMenu = await fetchMenus();
     return {
       fetchUserInfo,
+      fetchMenus,
       currentUser,
+      currentMenu,
       settings: defaultSettings as Partial<LayoutSettings>,
     };
   }
   return {
     fetchUserInfo,
+    fetchMenus,
     settings: defaultSettings as Partial<LayoutSettings>,
   };
 }
@@ -100,6 +124,12 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         ]
       : [],
     menuHeaderRender: undefined,
+    menuDataRender: (menuData: MenuDataItem[]) => {
+      if(initialState?.currentMenu){
+        return initialState.currentMenu
+      }
+      return menuData;
+    },
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
@@ -137,8 +167,8 @@ export const request = {
   requestInterceptors: [
     // 直接写一个 function，作为拦截器
     (url, options) => {
-        return { 
-          url: `http://localhost:10086${url}`, options 
+        return {
+          url: `http://localhost:10086${url}`, options
         }
       }
     ]

@@ -49,8 +49,9 @@ export default {
   'menu.editor.flow': '流程编辑器',
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
-  
+
   'menu.list.test': '列表测试',
   'menu.roles': '角色测试',
-  
+  'menu.menus': '菜单CRUD',
+
 };
