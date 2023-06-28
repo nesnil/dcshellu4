@@ -6,6 +6,7 @@ import { ProTable } from '@ant-design/pro-components';
 import {createMenu, deleteMenu, getMenus, updateMenu} from '@/services/ant-design-pro/menus';
 import {DeleteOutlined, EditOutlined, PlusCircleOutlined} from "@ant-design/icons";
 import {useModel} from "@umijs/max";
+import {MenuDataItem} from "@umijs/route-utils";
 
 const handleSaveMenu: (menu:API.Menu) => Promise<boolean> = async (menu)=>{
   const loadMsgHide = message.loading("正在保存");
@@ -126,7 +127,7 @@ const MenuList: React.FC = () =>{
               const res:boolean = await handleSaveMenu(menu);
               if(res){
 
-                const menus = await initialState!.fetchMenus!();
+                const menus  = await initialState?.fetchMenus?.();
 
                 setInitialState({
                   menus,

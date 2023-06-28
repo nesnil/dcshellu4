@@ -1,5 +1,4 @@
 import Footer from '@/components/Footer';
-import { Question, SelectLang } from '@/components/RightContent';
 import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -24,7 +23,7 @@ export async function getInitialState(): Promise<{
   currentMenu?: MenuDataItem[];
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
-  fetchMenus?: () => Promise< MenuDataItem[] >;
+  fetchMenus?: () => Promise< MenuDataItem[] | undefined>;
 }> {
   const fetchUserInfo = async () => {
     try {
@@ -37,7 +36,7 @@ export async function getInitialState(): Promise<{
     }
     return undefined;
   };
-  const  fetchMenus = async()=>{
+  const  fetchMenus = async ()=>{
     const resp = await getMenus();
     const menu2MenuDataItem:(m:API.Menu) => MenuDataItem = (m:API.Menu) =>{
       const item:MenuDataItem = {
@@ -124,12 +123,13 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         ]
       : [],
     menuHeaderRender: undefined,
+    /* 使用自定义菜单
     menuDataRender: (menuData: MenuDataItem[]) => {
       if(initialState?.currentMenu){
         return initialState.currentMenu
       }
       return menuData;
-    },
+    },*/
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
@@ -163,7 +163,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
  */
 export const request = {
   ...errorConfig,
-  /*
+
   requestInterceptors: [
     // 直接写一个 function，作为拦截器
     (url, options) => {
@@ -172,5 +172,4 @@ export const request = {
         }
       }
     ]
-    */
 };
